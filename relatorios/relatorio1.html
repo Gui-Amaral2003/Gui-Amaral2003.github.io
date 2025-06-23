@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Lab 1 - Captura de Imagem e Vídeo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header, section {
+            margin-bottom: 40px;
+        }
+        h1, h2 {
+            color: #1a73e8;
+        }
+        img, video {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Relatório - Laboratório 1: Captura de Imagem e Vídeo</h1>
+        <p><strong>Grupo:</strong> 6</p>
+        <p><strong>Integrantes:</strong> Guilherme do Amaral, Cauã de Souza Oliveira Querino</p>
+        <p><strong>Data do experimento:</strong> 18 de junho de 2025</p>
+        <p><strong>Data de publicação:</strong> 22 de junho de 2025</p>
+    </header>
+
+    <section>
+        <h2>Introdução</h2>
+        <p>Este relatório apresenta as atividades desenvolvidas no Laboratório 1 da disciplina de Visão Computacional. O objetivo principal foi conhecer e aplicar os comandos básicos do OpenCV para leitura, exibição e gravação de imagens e vídeos, tanto de arquivos quanto da câmera do computador.</p>
+    </section>
+
+    <section>
+        <h2>Procedimentos Experimentais</h2>
+    
+        <h3>(A) Leitura de imagem em arquivo - L1_1_img.py</h3>
+        <pre><code>
+    img = cv.imread('messi5.jpg', 0)
+    cv.imshow('image', img)
+    cv.waitKey(0)
+        </code></pre>
+        <p>Este programa realiza a leitura de uma imagem em escala de cinza (parâmetro `0` no `cv.imread`). Isso explica por que a imagem exibida não é colorida — pois é convertida para tons de cinza no momento da leitura.</p>
+        <p>Ao pressionar 's', a imagem é salva com o nome <code>messigray.png</code>.</p>
+    
+        <h3>(B) Leitura de vídeo em arquivo - L1_2_video.py</h3>
+        <pre><code>
+    cap = cv.VideoCapture('big_buck_bunny.mp4')
+    time.sleep(1/25.0)
+        </code></pre>
+        <p>O programa lê e exibe quadro a quadro um vídeo local. A função <code>time.sleep(1/25.0)</code> simula um frame rate de 25 FPS.</p>
+    
+        <p><strong>Alterações:</strong></p>
+        <ul>
+            <li><strong>Para acelerar:</strong> reduzir o tempo para <code>time.sleep(1/50.0)</code></li>
+            <li><strong>Para desacelerar:</strong> aumentar para <code>time.sleep(1/10.0)</code></li>
+        </ul>
+        <p><strong>Explicação:</strong> O intervalo entre os frames influencia diretamente na fluidez do vídeo. A diminuição do intervalo torna o vídeo mais rápido, e o aumento, mais lento.</p>
+    
+        <h3>(C) Leitura da webcam e captura com tecla - L1_3_webcam.py</h3>
+        <pre><code>
+    if cv.waitKey(1) == ord('x'):
+        cv.imwrite("foto1.png", frame)
+        </code></pre>
+        <p>Adicionamos ao código original a funcionalidade de capturar uma imagem pressionando a tecla <strong>'x'</strong>. A imagem é salva com o nome <code>foto1.png</code>.</p>
+    
+        <h3>(D) Gravação de vídeo da webcam - L1_4_webcap.py</h3>
+        <pre><code>
+    out = cv.VideoWriter('saida.avi', fourcc, 10.0, (int(width),int(height)))
+    frame = cv.flip(frame, 0)
+    out.write(frame)
+        </code></pre>
+        <p>O programa grava um vídeo da webcam e salva como <code>saida.avi</code>. O frame é invertido verticalmente com <code>cv.flip</code>, mas pode ser removido se quiser gravar normalmente.</p>
+    
+        <p><strong>Alteração:</strong> Para gravar sem inverter, basta comentar/remover a linha:</p>
+        <pre><code># frame = cv.flip(frame, 0)</code></pre>
+    
+        <h3>Onde aplicar processamento de imagem?</h3>
+        <p>As operações de processamento (como conversão de cor, filtros, etc.) devem ser inseridas <strong>após a leitura do frame</strong> e <strong>antes da exibição ou gravação</strong>, como neste exemplo:</p>
+        <pre><code>
+    ret, frame = cap.read()
+    if ret:
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        cv.imshow('frame', frame)
+        </code></pre>
+    </section>
+    
+
+    <section>
+        <h2>Parte 2: Obtenção de Fotos e Vídeos</h2>
+
+        <h3>Foto Geral da Equipe</h3>
+        <img src="foto_grupo.png" alt="Foto da Equipe">
+
+        <h3>Avatar Montagem</h3>
+        <img src="avatar_montagem.png" alt="Montagem de Avatares">
+
+        <h3>Vídeos com Pessoas e Objetos</h3>
+        <p>Vídeo 1 – Movimento Lento (Pessoa A):</p>
+        <video controls>
+            <source src="arquivos/video_lento_pessoa.mp4" type="video/mp4">
+        </video>
+
+        <p>Vídeo 2 – Movimento Rápido (Pessoa B):</p>
+        <video controls>
+            <source src="arquivos/video_rapido_pessoa.mp4" type="video/mp4">
+        </video>
+
+        <p>Vídeo 3 – Objeto em movimento lento:</p>
+        <video controls>
+            <source src="arquivos/video_lento_objeto.mp4" type="video/mp4">
+        </video>
+
+        <p>Vídeo 4 – Objeto em movimento rápido:</p>
+        <video controls>
+            <source src="arquivos/video_rapido_objeto.mp4" type="video/mp4">
+        </video>
+    </section>
+
+    <section>
+        <h2>Conclusão</h2>
+        <p>O laboratório 1 nos permitiu compreender o funcionamento das bibliotecas de captura e exibição de imagens/vídeos em Python com OpenCV. As modificações nos códigos proporcionaram melhor compreensão do fluxo de aquisição e gravação dos dados visuais.</p>
+    </section>
+
+    <section>
+        <h2>Referências</h2>
+        <ul>
+            <li>MINICHINO, J. HOWSE, J. Learning OpenCV 3 Computer Vision with Python, 2nd Ed, Packt Publishing, 2015.</li>
+            <li><a href="https://docs.opencv.org/master/d6/d00/tutorial_py_root.html" target="_blank">Tutorial OpenCV e Python</a></li>
+            <li><a href="https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html" target="_blank">Getting Started with Images</a></li>
+            <li><a href="https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html" target="_blank">Getting Started with Videos</a></li>
+            <li><a href="https://convertio.co/pt/" target="_blank">Convertio – Conversão de vídeo</a></li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 - Grupo 6 - UFABC</p>
+    </footer>
+
+</body>
+</html>

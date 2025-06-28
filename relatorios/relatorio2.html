@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório Lab 2 - Calibração de Câmeras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    header, section {
+      margin-bottom: 40px;
+    }
+    h1, h2 {
+      color: #1a73e8;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Relatório - Laboratório 2: Calibração de Câmeras</h1>
+    <p><strong>Grupo:</strong> 6</p>
+    <p><strong>Integrantes:</strong> Guilherme do Amaral, Cauã de Souza Oliveira Querino</p>
+    <p><strong>Data do experimento:</strong> Junho de 2025</p>
+    <p><strong>Data de publicação:</strong> 28 de junho de 2025</p>
+  </header>
+
+  <section>
+    <h2>Introdução</h2>
+    <p>Este relatório apresenta os resultados obtidos durante o experimento de calibração de câmeras utilizando a biblioteca OpenCV. Foram explorados os parâmetros intrínsecos e extrínsecos das câmeras, além da análise dos coeficientes de distorção. As etapas envolveram a calibração com imagens fornecidas, imagens capturadas com webcam e uma segunda câmera pessoal.</p>
+  </section>
+
+  <section>
+    <h2>Procedimentos Experimentais</h2>
+    <p>Utilizamos os scripts <code>L2_cal.py</code> e <code>L2_chess.py</code> para executar a calibração. As etapas foram executadas conforme orientações do laboratório. Os parâmetros extraídos incluem a matriz intrínseca (K), vetor de distorção, vetores de rotação (rvecs) e de translação (tvecs).</p>
+  </section>
+
+  <section>
+    <h2>(A) Calibração com imagens fornecidas</h2>
+    <p><strong>Matriz K:</strong></p>
+    <pre>
+[[536.07345295   0.         342.37047283]
+ [  0.         536.01636331 235.53687701]
+ [  0.           0.           1.        ]]
+    </pre>
+
+    <p><strong>Coeficientes de distorção:</strong></p>
+    <pre>
+[[-0.26509044 -0.04674186  0.00183301 -0.00031469  0.25231154]]
+    </pre>
+
+    <p><strong>rvecs e tvecs:</strong> Foram obtidos 13 pares de vetores para cada imagem usada na calibração.</p>
+
+    <p><strong>Explicações:</strong></p>
+    <ul>
+      <li><strong>K:</strong> Matriz intrínseca com foco em pixels (fx, fy) e ponto principal (cx, cy).</li>
+      <li><strong>rvecs:</strong> Representam a rotação da câmera em relação ao sistema do mundo.</li>
+      <li><strong>tvecs:</strong> Representam a posição da câmera no espaço.</li>
+      <li><strong>dist:</strong> Modela imperfeições da lente, como distorções radiais e tangenciais.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>(B) Calibração com webcam</h2>
+    <p><strong>Matriz K:</strong></p>
+    <pre>
+[[677.65195315   0.         326.66855046]
+ [  0.         678.04095186 222.23713321]
+ [  0.           0.           1.        ]]
+    </pre>
+
+    <p><strong>Coeficientes de distorção:</strong></p>
+    <pre>
+[[-0.06255289  0.92289705 -0.00007221  0.00489208 -4.12673123]]
+    </pre>
+
+    <p><strong>Parâmetros derivados:</strong></p>
+    <ul>
+      <li><strong>Focal length:</strong> fx = 677.65, fy = 678.04</li>
+      <li><strong>Aspect ratio:</strong> fx / fy ≈ 0.9994</li>
+      <li><strong>Skew:</strong> 0</li>
+      <li><strong>Principal point:</strong> (326.67, 222.24)</li>
+    </ul>
+
+    <p><strong>Discussão:</strong> A câmera da webcam possui um foco mais alto e coeficientes de distorção mais acentuados (notavelmente o valor de k2 e k3).</p>
+
+    <p><strong>Por que há múltiplos R e t?</strong></p>
+    <p>Porque cada par rvec/tvec corresponde à pose da câmera em relação ao plano do tabuleiro em cada imagem usada na calibração. Eles descrevem como a câmera estava posicionada em relação ao padrão de calibração em cada captura individual.</p>
+  </section>
+
+  <section>
+    <h2>(C) Calibração de uma segunda câmera pessoal</h2>
+    <p><strong>Matriz K:</strong></p>
+    <pre>
+[[582.02866362   0.         327.1752013 ]
+ [  0.         582.16109397 238.09136058]
+ [  0.           0.           1.        ]]
+    </pre>
+
+    <p><strong>Coeficientes de distorção:</strong></p>
+    <pre>
+[[-0.38933703  0.22887437  0.0001885   0.00103873 -0.11741801]]
+    </pre>
+
+    <p><strong>rvecs e tvecs:</strong> 15 pares de vetores foram gerados.</p>
+
+    <p><strong>Comparação:</strong> Essa câmera apresenta parâmetros intermediários entre os dois experimentos anteriores. Os coeficientes de distorção são mais moderados do que os da webcam, indicando uma lente de melhor qualidade.</p>
+  </section>
+
+  <section>
+    <h2>Conclusão</h2>
+    <p>O experimento demonstrou com clareza os conceitos fundamentais de calibração de câmeras. Foi possível observar como diferentes câmeras apresentam variações nos parâmetros intrínsecos e nos coeficientes de distorção. Também ficou evidente a importância das matrizes de rotação e translação para mapear a relação entre o mundo 3D e a imagem 2D.</p>
+  </section>
+
+  <section>
+    <h2>Referências</h2>
+    <ul>
+      <li><a href="https://learnopencv.com/geometry-of-image-formation/">LearnOpenCV – Geometria da formação da imagem</a></li>
+      <li><a href="https://learnopencv.com/camera-calibration-using-opencv/">Calibração com OpenCV</a></li>
+      <li><a href="https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html">Documentação oficial OpenCV</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Pinhole_camera_model">Pinhole Camera Model – Wikipedia</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 - Grupo 6 - UFABC</p>
+  </footer>
+
+</body>
+</html>

@@ -27,6 +27,18 @@
       font-size: 0.9em;
       color: #777;
     }
+    .steps {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-left: 4px solid #1a73e8;
+      margin-bottom: 20px;
+    }
+    .steps ol {
+      padding-left: 20px;
+    }
+    .steps li {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -38,6 +50,47 @@
     <p><strong>Data do experimento:</strong> Junho de 2025</p>
     <p><strong>Data de publicação:</strong> 28 de junho de 2025</p>
   </header>
+
+  <section>
+    <h2>Como Executar os Códigos</h2>
+    <div class="steps">
+      <h3>Passo a Passo para Calibração de Câmera</h3>
+      <ol>
+        <li><strong>Pré-requisitos:</strong>
+          <ul>
+            <li>Python instalado (versão 3.x recomendada)</li>
+            <li>Bibliotecas OpenCV (cv2) e NumPy instaladas</li>
+            <li>Tabuleiro de xadrez impresso (6x9 cantos internos)</li>
+          </ul>
+        </li>
+        <li><strong>Captura de imagens (L2_chess.py):</strong>
+          <ol type="a">
+            <li>Execute o script: <code>python L2_chess.py</code></li>
+            <li>Aponte a câmera para o tabuleiro de xadrez em diferentes ângulos e distâncias</li>
+            <li>Pressione 's' para salvar cada frame (as imagens serão salvas como frm0.jpg, frm1.jpg, etc.)</li>
+            <li>Pressione 'q' para sair quando tiver capturado imagens suficientes (recomendado 15-20 imagens)</li>
+          </ol>
+        </li>
+        <li><strong>Calibração (L2_cal.py):</strong>
+          <ol type="a">
+            <li>Certifique-se que as imagens capturadas (.jpg) estão no mesmo diretório do script</li>
+            <li>Execute o script: <code>python L2_cal.py</code></li>
+            <li>O script mostrará cada imagem com os cantos do tabuleiro detectados</li>
+            <li>Pressione qualquer tecla para avançar para a próxima imagem</li>
+            <li>Ao final, os parâmetros da câmera serão exibidos no terminal</li>
+          </ol>
+        </li>
+        <li><strong>Dicas importantes:</strong>
+          <ul>
+            <li>Certifique-se que o tabuleiro está visível e bem iluminado em todas as imagens</li>
+            <li>Varie a orientação do tabuleiro (inclinado, rotacionado) para melhor calibração</li>
+            <li>Para melhores resultados, use pelo menos 10 imagens com o tabuleiro em diferentes posições</li>
+            <li>O tabuleiro deve ocupar uma parte significativa da imagem (30-70% da área)</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
 
   <section>
     <h2>Introdução</h2>

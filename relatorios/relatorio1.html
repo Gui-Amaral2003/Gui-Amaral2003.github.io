@@ -33,6 +33,22 @@
             font-size: 0.9em;
             color: #777;
         }
+        .steps {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #1a73e8;
+            margin-bottom: 20px;
+        }
+        .steps ol {
+            padding-left: 20px;
+        }
+        .steps li {
+            margin-bottom: 10px;
+        }
+        .code-name {
+            font-weight: bold;
+            color: #1a73e8;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +60,74 @@
         <p><strong>Data do experimento:</strong> 18 de junho de 2025</p>
         <p><strong>Data de publicação:</strong> 22 de junho de 2025</p>
     </header>
+
+    <section>
+        <h2>Como Executar os Códigos</h2>
+        <div class="steps">
+            <h3>Passo a Passo para Execução dos Programas</h3>
+            <ol>
+                <li><strong>Pré-requisitos:</strong>
+                    <ul>
+                        <li>Python instalado (versão 3.x recomendada)</li>
+                        <li>Bibliotecas OpenCV (cv2) e NumPy instaladas</li>
+                        <li>Arquivos de mídia necessários (para alguns scripts)</li>
+                    </ul>
+                </li>
+                
+                <li><strong><span class="code-name">L1_1_img.py</span> - Trabalhando com imagens:</strong>
+                    <ol type="a">
+                        <li>Coloque uma imagem chamada <code>messi5.jpg</code> no mesmo diretório do script</li>
+                        <li>Execute: <code>python L1_1_img.py</code></li>
+                        <li>A imagem será exibida em tons de cinza</li>
+                        <li>Pressione:
+                            <ul>
+                                <li><strong>ESC</strong> para sair</li>
+                                <li><strong>'s'</strong> para salvar como <code>messigray.png</code> e sair</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </li>
+                
+                <li><strong><span class="code-name">L1_2_video.py</span> - Trabalhando com vídeos:</strong>
+                    <ol type="a">
+                        <li>Coloque um vídeo chamado <code>big_buck_bunny.mp4</code> no mesmo diretório</li>
+                        <li>Execute: <code>python L1_2_video.py</code></li>
+                        <li>O vídeo será reproduzido a 25 FPS</li>
+                        <li>Pressione <strong>'q'</strong> para interromper a reprodução</li>
+                        <li><strong>Dica:</strong> Modifique <code>time.sleep(1/25.0)</code> para alterar a velocidade</li>
+                    </ol>
+                </li>
+                
+                <li><strong><span class="code-name">L1_3_webcam.py</span> - Captura da webcam:</strong>
+                    <ol type="a">
+                        <li>Execute: <code>python L1_3_webcam.py</code></li>
+                        <li>A webcam será ativada e mostrará a captura em tempo real</li>
+                        <li>Pressione <strong>'q'</strong> para encerrar</li>
+                        <li><strong>Extensão:</strong> Adicione <code>cv.imwrite("foto.png", frame)</code> para capturar fotos</li>
+                    </ol>
+                </li>
+                
+                <li><strong><span class="code-name">L1_4_webcap.py</span> - Gravação de vídeo da webcam:</strong>
+                    <ol type="a">
+                        <li>Execute: <code>python L1_4_webcap.py</code></li>
+                        <li>A webcam será ativada e começará a gravar</li>
+                        <li>O vídeo será salvo como <code>saida.avi</code></li>
+                        <li>Pressione <strong>'q'</strong> para parar a gravação</li>
+                        <li><strong>Observação:</strong> O vídeo é gravado invertido verticalmente por padrão</li>
+                    </ol>
+                </li>
+                
+                <li><strong>Dicas gerais:</strong>
+                    <ul>
+                        <li>Verifique se todas as dependências estão instaladas (<code>pip install opencv-python numpy</code>)</li>
+                        <li>Para scripts que usam arquivos, certifique-se que estão no diretório correto</li>
+                        <li>Em caso de erros com a webcam, verifique permissões do sistema</li>
+                        <li>Para alterar a resolução da webcam, use <code>cap.set(cv.CAP_PROP_FRAME_WIDTH, 640)</code> e similar para altura</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </section>
 
     <section>
         <h2>Introdução</h2>

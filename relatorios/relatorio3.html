@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório Lab 3 - Câmera Estéreo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    header, section {
+      margin-bottom: 40px;
+    }
+    h1, h2 {
+      color: #1a73e8;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Relatório - Laboratório 3: Câmera Estéreo</h1>
+    <p><strong>Grupo:</strong> 6</p>
+    <p><strong>Integrantes:</strong> Guilherme do Amaral, Cauã de Souza Oliveira Querino</p>
+    <p><strong>Data do experimento:</strong> Junho de 2025</p>
+    <p><strong>Data de publicação:</strong> 6 de julho de 2025</p>
+  </header>
+
+  <section>
+    <h2>Introdução</h2>
+    <p>O presente relatório documenta a construção e calibração de um sistema de câmera estéreo utilizando duas webcams. Os experimentos visam compreender a geometria epipolar, estereoscopia e reconstrução 3D por meio da visão computacional com OpenCV. Foram utilizadas referências teóricas e scripts da comunidade OpenCV para guiar os procedimentos.</p>
+  </section>
+
+  <section>
+    <h2>Montagem da Câmera Estéreo</h2>
+    <p><em>A câmera 3D foi montada utilizando 2 webcams presas em uma base rígida utilizando fita adesiva. A distância entre as duas foi baseada na distância entre as duas lentes do óculos 3D, centralizando-as</em></p>
+  </section>
+
+  <section>
+    <h2>Procedimentos Experimentais</h2>
+    <p>O experimento consistiu na montagem física de duas webcams fixadas paralelamente com uma separação de aproximadamente 5 cm. Em seguida, foram capturadas imagens do padrão de calibração (tabuleiro) para ambos os lados (esquerdo e direito). Os scripts <code>capture_images_abc.py</code>, <code>calibrate_abc.py</code> e <code>movie3d_abc.py</code> foram adaptados para gerar os parâmetros de calibração e criar uma visualização 3D em tempo real.</p>
+  </section>
+
+  <section>
+  <h2>Pontos relevantes dos Scripts</h2>
+
+  <p><strong><code>capture_image.py</code></strong></p>
+  <p>Captura imagens automaticamente a cada segundo se as bordas do tabuleiro forem detectadas:</p>
+  <pre><code>if (retR == True) and (retL == True) and timer <= 0:
+    count += 1
+    cv2.imwrite(output_path + 'stereoR/img%d.png' % count, frameR)
+    cv2.imwrite(output_path + 'stereoL/img%d.png' % count, frameL)</code></pre>
+
+  <p><strong><code>calibrate.py</code></strong></p>
+  <p>Realiza calibração individual das câmeras e calibração estéreo com OpenCV:</p>
+  <pre><code>retS, new_mtxL, distL, new_mtxR, distR, Rot, Trns, Emat, Fmat = cv2.stereoCalibrate(...)
+cv2.stereoRectify(...)
+cv2.initUndistortRectifyMap(...)
+cv_file.write("Left_Stereo_Map_x", Left_Stereo_Map[0])</code></pre>
+
+  <p><strong><code>movie3d.py</code></strong></p>
+  <p>Lê os vídeos MP4, aplica remapeamento e monta o anaglifo (vermelho-azul):</p>
+  <pre><code>output[:,:,2] = Left_nice[:,:,2]  # canal azul da esquerda
+output[:,:,1] = Right_nice[:,:,1] # verde da direita
+output[:,:,0] = Right_nice[:,:,0] # vermelho da direita</code></pre>
+
+  <p><strong><code>record.py</code></strong></p>
+  <p>Grava os vídeos MP4 das duas câmeras simultaneamente:</p>
+  <pre><code>out_left = cv.VideoWriter('stereoL.mp4', fourcc, fps, (width, height))
+out_right = cv.VideoWriter('stereoR.mp4', fourcc, fps, (width, height))</code></pre>
+</section>
+
+  <section>
+    <h2>(A) Execução com imagens fornecidas</h2>
+    <p>Foram utilizados os códigos da pasta <code>stereo-camera</code> disponíveis no repositório oficial. O script <code>calibrate.py</code> gerou os seguintes parâmetros principais da câmera estéreo:</p>
+    <ul>
+      <li><strong>Matrizes Intrínsecas</strong> (para cada câmera)</li>
+      <li><strong>Coeficientes de Distorção</strong></li>
+      <li><strong>Matriz de Rotação R</strong> (entre câmeras)</li>
+      <li><strong>Vetor de Translação T</strong> (entre câmeras)</li>
+      <li><strong>Matriz Essencial E</strong></li>
+      <li><strong>Matriz Fundamental F</strong></li>
+      <li><strong>Mapas de retificação</strong> (usados para alinhar as imagens)</li>
+    </ul>
+    <p>Esses dados foram salvos em arquivos XML, e utilizados para gerar a visualização 3D com o script <code>movie3d.py</code>.</p>
+  </section>
+
+  <section>
+  <h2>Parâmetros XML Salvos (params_py.xml)</h2>
+  <p>Durante a calibração estéreo, foram salvos quatro mapas fundamentais para a retificação das imagens:</p>
+  <ul>
+    <li><code>Left_Stereo_Map_x</code></li>
+    <li><code>Left_Stereo_Map_y</code></li>
+    <li><code>Right_Stereo_Map_x</code></li>
+    <li><code>Right_Stereo_Map_y</code></li>
+  </ul>
+
+  <p>Esses mapas foram armazenados no arquivo <code>params_py.xml</code> e são usados nos scripts para alinhar as imagens esquerda e direita. A seguir, um trecho real dos valores do mapa <code>Left_Stereo_Map_x</code>:</p>
+
+  <pre><code>
+&lt;Left_Stereo_Map_x type_id="opencv-matrix"&gt;
+  &lt;rows&gt;480&lt;/rows&gt;
+  &lt;cols&gt;640&lt;/cols&gt;
+  &lt;dt&gt;"2s"&lt;/dt&gt;
+  &lt;data&gt;
+    -6 -361 -2 -356 2 -351 5 -346 9 -341 12 -336 15 -332 19 -327
+    22 -323 25 -318 28 -314 31 -310 35 -305 38 -301 41 -297
+    ...
+    233 -52 234 -51 235 -50 235 -49 236 -48 237 -47 238 -47
+    239 -46 240 -45 240 -44 241 -43 242 -43 243 -42 244 -41
+  &lt;/data&gt;
+&lt;/Left_Stereo_Map_x&gt;
+  </code></pre>
+
+  <p>Esses valores representam a transformação pixel a pixel a ser aplicada em cada imagem para corrigir distorções e alinhar as câmeras para visão estéreo. Os quatro mapas juntos são utilizados pela função <code>cv2.remap()</code>.</p>
+
+  <p>Leitura no código:</p>
+  <pre><code>
+cv_file = cv2.FileStorage("params_py.xml", cv2.FILE_STORAGE_READ)
+Left_Stereo_Map_x = cv_file.getNode("Left_Stereo_Map_x").mat()
+Left_Stereo_Map_y = cv_file.getNode("Left_Stereo_Map_y").mat()
+Right_Stereo_Map_x = cv_file.getNode("Right_Stereo_Map_x").mat()
+Right_Stereo_Map_y = cv_file.getNode("Right_Stereo_Map_y").mat()
+cv_file.release()
+  </code></pre>
+</section>
+
+  <section>
+    <h2>(B) Calibração com câmera estéreo da equipe</h2>
+    <p>Com as imagens capturadas pelas webcams fixadas, realizamos a calibração personalizada. As imagens foram salvas com o nome do integrante do grupo e utilizadas no <code>calibrate_abc.py</code>.</p>
+    <p><strong>Parâmetros obtidos:</strong></p>
+    <ul>
+      <li><strong>Matrizes K (esquerda e direita)</strong></li>
+      <li><strong>Vetores de distorção</strong></li>
+      <li><strong>Matriz R (entre as câmeras)</strong></li>
+      <li><strong>Vetor T</strong></li>
+      <li><strong>Matrizes de retificação (R1, R2)</strong></li>
+      <li><strong>Matrizes de projeção (P1, P2)</strong></li>
+      <li><strong>Matriz Q (disparidade para profundidade)</strong></li>
+    </ul>
+    <p>Todos esses parâmetros foram salvos no arquivo <code>params_py.xml</code>, que foi utilizado nos scripts subsequentes.</p>
+  </section>
+
+  <section>
+    <h2>(C) Visualização em tempo real e geração de imagem 3D</h2>
+    <p>Com as câmeras calibradas e fixas, rodamos o script <code>movie3d_abc.py</code> que apresentou a imagem 3D. Foi perceptível a profundidade dos objetos próximos e distantes, especialmente ao mover um objeto entre a lente e o fundo.</p>
+  </section>
+
+  <section>
+  <h2>(D) Gravação de vídeo 3D</h2>
+  <p>Alteramos o script para salvar o vídeo com duração de aproximadamente 15 segundos. O vídeo foi salvo em AVI e convertido para MP4 para facilitar visualização. Durante a exibição do vídeo com óculos 3D, observamos:</p>
+  <ul>
+    <li><strong>Boa percepção de profundidade</strong> para objetos em movimento frontal-lateral.</li>
+    <li><strong>Menor percepção</strong> para objetos estáticos ou muito próximos ao fundo.</li>
+    <li><strong>Qualidade levemente inferior</strong> ao vivo, principalmente devido à compressão do vídeo.</li>
+  </ul>
+  <p><strong>Percepção individual:</strong> O uso dos óculos 3D proporcionou uma experiência imersiva, com clara separação de planos na imagem. Foi possível perceber diferentes níveis de profundidade mesmo em um sistema de baixo custo.</p>
+  
+  <h3>Vídeo 3D Gerado</h3>
+  <video width="640" height="360" controls>
+    <source src="arquivos/3D_output.mp4" type="video/mp4">
+    Seu navegador não suporta a tag de vídeo.
+  </video>
+  <p><em>Nota:</em> Para melhor experiência, assista ao vídeo com óculos 3D vermelho-azul (anaglifo).</p>
+</section>
+
+  <section>
+    <h2>Conclusão</h2>
+    <p>A construção de uma câmera estéreo caseira e a execução dos algoritmos de calibração e visualização permitiram compreender os fundamentos da geometria epipolar e reconstrução 3D. O experimento destacou a importância do alinhamento preciso e da calibração para obtenção de imagens com boa percepção estereoscópica.</p>
+  </section>
+
+  <section>
+    <h2>Referências</h2>
+    <ul>
+      <li><a href="https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/">[1] Stereo Camera com OpenCV</a></li>
+      <li><a href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/">[2] Geometria Epipolar</a></li>
+      <li><a href="https://learnopencv.com/understanding-lens-distortion/">[3] Distorção de Lentes</a></li>
+      <li><a href="https://learnopencv.com/geometry-of-image-formation/">[4] Formação de Imagens</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 - Grupo 6 - UFABC</p>
+  </footer>
+
+</body>
+</html>

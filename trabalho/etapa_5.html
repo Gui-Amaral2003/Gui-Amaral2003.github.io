@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Trabalho - Etapa 5: Laboratório Experimental (LEX)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header, section {
+            margin-bottom: 40px;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .caixa {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .caixa ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Trabalho - Etapa 5: Desenvolvimento do Laboratório Experimental (LEX)</h1>
+        <p><strong>Grupo:</strong> 6</p>
+        <p><strong>Integrantes:</strong> Guilherme do Amaral, Cauã de Souza Oliveira Querino</p>
+        <p><strong>Data de elaboração:</strong> 06 de agosto de 2025</p>
+    </header>
+
+    <section class="caixa">
+        <h2>Introdução ao Laboratório</h2>
+        <p>Bem-vindo ao teste de campo do nosso Sistema de Processamento Visual. O objetivo deste experimento é avaliar a usabilidade e a eficácia do nosso protótipo de "Sistema de Navegação e Identificação de Objetos para Pessoas com Deficiência Visual".</p>
+        <p>Sua participação é fundamental para entendermos como o sistema se comporta em situações reais e como podemos melhorá-lo. Você seguirá um roteiro para testar as funcionalidades de reconhecimento de formas e estimativa de distância. Ao final, pedimos que responda a um breve questionário.</p>
+    </section>
+
+    <section class="caixa">
+        <h2>Roteiro do Procedimento Experimental</h2>
+        <h3>Objetivo do Teste</h3>
+        <p>Verificar a capacidade do sistema de identificar uma forma (quadrado) e estimar a distância até ele usando uma webcam.</p>
+
+        <h3>Materiais Necessários</h3>
+        <ul>
+            <li>Computador com o ambiente Python e OpenCV configurado.</li>
+            <li>Webcam conectada e funcionando.</li>
+            <li>O objeto de teste: um cartão quadrado com 10 cm de lado.</li>
+        </ul>
+
+        <h3>Passo a Passo</h3>
+        <ol>
+            <li><strong>Preparação:</strong> Certifique-se de que a webcam está conectada. Abra um terminal na pasta do projeto.</li>
+            <li><strong>Execução do Sistema:</strong> Digite e execute o seguinte comando no terminal:
+                <pre><code>python3 main.py</code></pre>
+            </li>
+            <li><strong>Teste de Detecção:</strong> Uma janela chamada "Medidor de Distância - Equipe_DistanciaSimples" será aberta, mostrando a imagem da webcam.
+                <ul>
+                    <li>Posicione o cartão quadrado de 10 cm na frente da câmera.</li>
+                    <li>Observe se o sistema desenha um retângulo verde ao redor do objeto.</li>
+                </ul>
+            </li>
+            <li><strong>Teste de Estimativa de Distância:</strong>
+                <ul>
+                    <li>Com o objeto detectado, aproxime-o e afaste-o da câmera.</li>
+                    <li>Observe o texto acima do retângulo (ex: "quadrado: 30cm"). Anote se a distância mostrada parece corresponder à realidade (aumenta quando você afasta, diminui quando aproxima).</li>
+                </ul>
+            </li>
+            <li><strong>Coleta de Resultados:</strong> Após testar em diferentes distâncias, feche a janela do programa pressionando a tecla 'q'.</li>
+            <li><strong>Finalização:</strong> Por favor, preencha o Questionário de Avaliação e a Enquete de Opinião abaixo.</li>
+        </ol>
+    </section>
+
+    <section class="caixa">
+        <h2>Questionário de Avaliação do Experimento</h2>
+        <p>Para cada questão, atribua uma nota de 0 (não consegui/entendi) a 5 (sim, com certeza). [cite_start]O objetivo é avaliar a clareza do experimento [cite: 113-115].</p>
+        <form>
+            <p><strong>1. As instruções do roteiro foram claras e fáceis de seguir?</strong><br>
+                (0) <input type="radio" name="q1"> (1) <input type="radio" name="q1"> (2) <input type="radio" name="q1"> (3) <input type="radio" name="q1"> (4) <input type="radio" name="q1"> (5) <input type="radio" name="q1">
+            </p>
+            <p><strong>2. Você conseguiu executar o programa sem encontrar erros?</strong><br>
+                (0) <input type="radio" name="q2"> (1) <input type="radio" name="q2"> (2) <input type="radio" name="q2"> (3) <input type="radio" name="q2"> (4) <input type="radio" name="q2"> (5) <input type="radio" name="q2">
+            </p>
+            <p><strong>3. O sistema conseguiu detectar o objeto quadrado quando você o mostrou à câmera?</strong><br>
+                (0) <input type="radio" name="q3"> (1) <input type="radio" name="q3"> (2) <input type="radio" name="q3"> (3) <input type="radio" name="q3"> (4) <input type="radio" name="q3"> (5) <input type="radio" name="q3">
+            </p>
+            <p><strong>4. Você entendeu o que a informação de distância na tela (ex: "30cm") significava?</strong><br>
+                (0) <input type="radio" name="q4"> (1) <input type="radio" name="q4"> (2) <input type="radio" name="q4"> (3) <input type="radio" name="q4"> (4) <input type="radio" name="q4"> (5) <input type="radio" name="q4">
+            </p>
+        </form>
+    </section>
+
+    <section class="caixa">
+        <h2>Enquete Subjetiva de Opinião (ESO)</h2>
+        [cite_start]<p>Sua opinião sincera é muito importante para o futuro do projeto[cite: 118].</p>
+        <form>
+            <p><strong>1. Em sua opinião, uma ferramenta como essa seria útil para uma pessoa com deficiência visual no dia a dia? Por quê?</strong><br>
+                <textarea rows="4" cols="80"></textarea>
+            </p>
+            <p><strong>2. O que você mais gostou no sistema?</strong><br>
+                <textarea rows="4" cols="80"></textarea>
+            </p>
+            <p><strong>3. O que poderia ser melhorado? (Sugestões são bem-vindas)</strong><br>
+                <textarea rows="4" cols="80"></textarea>
+            </p>
+            <p><strong>4. Em uma escala de 1 (Ruim) a 5 (Excelente), como você avalia a experiência geral de usar o sistema?</strong><br>
+                (1) <input type="radio" name="e4"> (2) <input type="radio" name="e4"> (3) <input type="radio" name="e4"> (4) <input type="radio" name="e4"> (5) <input type="radio" name="e4">
+            </p>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 - Grupo 6 - UFABC</p>
+    </footer>
+
+</body>
+</html>

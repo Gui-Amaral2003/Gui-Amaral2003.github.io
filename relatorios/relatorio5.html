@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório Lab 5 - Extração de Características</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    header, section {
+      margin-bottom: 40px;
+    }
+    h1, h2 {
+      color: #1a73e8;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #777;
+    }
+    nav {
+      margin-bottom: 40px;
+      padding: 10px;
+      background: #e8f0fe;
+      border-radius: 5px;
+    }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline;
+      margin-right: 20px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #1a73e8;
+    }
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h2>Índice de Laboratórios</h2>
+    <ul>
+      <li><a href="relatorio_lab1.html">Laboratório 1</a></li>
+      <li><a href="relatorio_lab2.html">Laboratório 2</a></li>
+      <li><a href="relatorio_lab3.html">Laboratório 3: Câmera Estéreo</a></li>
+      <li><a href="relatorio_lab4.html">Laboratório 4</a></li>
+      <li><a href="relatorio_lab5.html">Laboratório 5: Extração de Características</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Relatório - Laboratório 5: Extração de Características</h1>
+    <p><strong>Grupo:</strong> 6</p>
+    <p><strong>Integrantes:</strong> Guilherme do Amaral, Cauã de Souza Oliveira Querino</p>
+    <p><strong>Data do experimento:</strong> Julho de 2025</p>
+    <p><strong>Data de publicação:</strong> 27 de julho de 2025</p>
+  </header>
+
+  <section>
+    <h2>Introdução</h2>
+    <p>Este relatório documenta os experimentos realizados no Laboratório 5 da disciplina ESZA019 - Visão Computacional, com foco na extração de características (features) em imagens. O objetivo é compreender os conceitos de detecção e descrição de características, utilizando detectores como Harris, Shi-Tomasi e SIFT, além de aplicar a Transformada de Hough para detecção de linhas e círculos. Foram realizados experimentos práticos com OpenCV, incluindo correspondência de características entre imagens, homografia, e processamento em tempo real com câmeras estéreo calibradas. Este relatório apresenta os procedimentos, resultados e análises, conectando as técnicas ao trabalho T1.</p>
+  </section>
+
+  <section>
+    <h2>Procedimentos Experimentais</h2>
+    <h3>Parte 1: Estudo Teórico</h3>
+    <p>Estudamos os conceitos de detecção e descrição de características, com base nos tutoriais da OpenCV. Foram analisados os seguintes detectores:</p>
+    <ul>
+      <li><strong>Detector de Harris</strong>: Identifica cantos em imagens com base em mudanças de intensidade em múltiplas direções.</li>
+      <li><strong>Detector de Shi-Tomasi</strong>: Aprimora o método de Harris, selecionando cantos mais robustos para rastreamento.</li>
+      <li><strong>Detector de SIFT</strong>: Extrai características invariantes a escala e rotação, úteis para correspondência entre imagens.</li>
+    </ul>
+    <p>Os detalhes teóricos foram consultados nos tutoriais oficiais da OpenCV, disponíveis nas referências.</p>
+
+    <h3>Parte 2: SIFT</h3>
+    <h4>(A) Feature Matching + Homography</h4>
+    <p>Implementamos um programa em OpenCV baseado no tutorial de "Feature Matching + Homography to find Objects". O programa detecta e faz a correspondência de características SIFT entre duas imagens contendo o mesmo objeto em posições distintas. Os resultados mostram as correspondências e a homografia calculada.</p>
+    <p><strong>Código: feature_matching_homography.py</strong></p>
+    <pre><code>
+    <!-- Espaço reservado para o código feature_matching_homography.py -->
+    </code></pre>
+
+    <h4>(B) SIFT com Câmera Estéreo</h4>
+    <p>Modificamos o código anterior para processar vídeo em tempo real de duas webcams calibradas como câmera estéreo. O programa aplica a detecção de características SIFT e exibe as correspondências em tempo real.</p>
+    <p><strong>Código: stereo_sift.py</strong></p>
+    <pre><code>
+    <!-- Espaço reservado para o código stereo_sift.py -->
+    </code></pre>
+
+    <h3>Parte 3: Hough Transform</h3>
+    <h4>(C) Detecção de Linhas e Círculos</h4>
+    <p>Implementamos um programa em OpenCV baseado no tutorial de Hough Transform para detectar linhas e círculos em imagens estáticas. Foram utilizados exemplos com formas geométricas claras para validar o algoritmo.</p>
+    <p><strong>Código: hough_transform.py</strong></p>
+    <pre><code>
+    <!-- Espaço reservado para o código hough_transform.py -->
+    </code></pre>
+
+    <h4>(D) Hough Transform com Câmera Estéreo</h4>
+    <p>Modificamos o código anterior para processar vídeo em tempo real de duas webcams calibradas como câmera estéreo. O programa detecta linhas e círculos em tempo real, exibindo os resultados sobrepostos às imagens.</p>
+    <p><strong>Código: stereo_hough.py</strong></p>
+    <pre><code>
+    <!-- Espaço reservado para o código stereo_hough.py -->
+    </code></pre>
+  </section>
+
+  <section>
+    <h2>Análise e Discussão</h2>
+    <p>As técnicas de detecção de características (Harris, Shi-Tomasi, SIFT) e Transformada de Hough foram analisadas em termos de robustez e aplicabilidade. O detector SIFT mostrou-se eficaz para correspondência entre imagens com variações de escala e rotação, sendo útil para aplicações como reconhecimento de objetos no trabalho T1. A Transformada de Hough foi eficiente na detecção de formas geométricas, mas sensível a ruídos, exigindo pré-processamento adequado. O uso de câmeras estéreo calibradas permitiu explorar a percepção de profundidade em tempo real, com potencial aplicação em mapeamento 3D no T1.</p>
+    <p><strong>Aplicações no T1:</strong> As técnicas de SIFT podem ser usadas para rastreamento de objetos em cenas complexas, enquanto a Transformada de Hough pode auxiliar na detecção de estruturas geométricas em ambientes mapeados, como bordas de móveis ou paredes.</p>
+  </section>
+
+  <section>
+    <h2>Conclusão</h2>
+    <p>O Laboratório 5 proporcionou uma compreensão prática dos conceitos de extração de características e sua aplicação em visão computacional. A implementação dos detectores SIFT e da Transformada de Hough, tanto em imagens estáticas quanto em vídeo estéreo, demonstrou a versatilidade dessas técnicas. Os experimentos destacaram a importância da calibração precisa e do pré-processamento para resultados robustos, com aplicações promissoras no trabalho T1.</p>
+  </section>
+
+  <section>
+    <h2>Referências</h2>
+    <ul>
+      <li><a href="https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html">OpenCV: Feature Detection and Description</a></li>
+      <li><a href="https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html">OpenCV: Feature Detection and Description Tutorials</a></li>
+      <li><a href="https://docs.opencv.org/4.x/d4/d7d/tutorial_harris_detector.html">OpenCV: Harris Corner Detector</a></li>
+      <li><a href="https://docs.opencv.org/4.x/d4/d93/tutorial_shi_tomasi.html">OpenCV: Shi-Tomasi Corner Detector</a></li>
+      <li><a href="https://docs.opencv.org/4.x/d7/dff/tutorial_feature_homography.html">OpenCV: Feature Matching + Homography</a></li>
+      <li><a href="https://learnopencv.com/hough-transform-with-opencv-c-python/">LearnOpenCV: Hough Transform</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 - Grupo 6 - UFABC</p>
+  </footer>
+
+</body>
+</html>

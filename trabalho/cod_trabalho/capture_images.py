@@ -16,7 +16,7 @@ import os
 # === CONFIGURAÇÕES ===
 camera_id = 1  # Geralmente 0 para câmera embutida
 output_dir = "data/calib"  # Pasta onde as imagens serão salvas
-num_images = 20  # Quantas imagens capturar
+num_images = 15  # Quantas imagens capturar
 chessboard_size = (9, 6)  # Número de cantos internos do tabuleiro (largura, altura)
 
 # Criar pasta de saída

@@ -4,17 +4,50 @@
     <meta charset="UTF-8">
     <title>Trabalho - Etapa 7: Relatório Final (RFT)</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; color: #333; }
-        header, section { margin-bottom: 40px; }
-        h1, h2, h3 { color: #1a73e8; }
-        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
-        footer { margin-top: 60px; font-size: 0.9em; color: #777; }
-        .caixa { background-color: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px;
-                 box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header, section {
+            margin-bottom: 40px;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .caixa {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         .caixa ul li { margin-bottom: 8px; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .muted { color: #666; font-size: .95em; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #e8f0fe; color: #1a73e8; font-weight: bold; font-size: 0.85em; }
+        .kbd { background:#efefef; border:1px solid #ddd; border-bottom-width:2px; padding:2px 6px; border-radius:4px; font-family: monospace; }
+        .warn { background: #fff7e6; border-left: 4px solid #f0ad4e; padding: 10px 14px; border-radius: 6px; }
+        .ok { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 10px 14px; border-radius: 6px; }
+        code { background:#f0f3f7; padding:2px 4px; border-radius:4px; }
+        a { color: #1a73e8; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+
     <header>
         <h1>Trabalho - Etapa 7: Relatório Final (RFT)</h1>
         <p><strong>Grupo:</strong> 6</p>
@@ -24,49 +57,103 @@
 
     <section class="caixa">
         <h2>1. Introdução</h2>
-        <p>Este relatório documenta o desenvolvimento do sistema de visão computacional
-        cujo objetivo é auxiliar deficientes visuais, estimando a distância da câmera até um
-        objeto plano (quadrado) usando calibração métrica.</p>
+        <p>Este relatório documenta o desenvolvimento de um <em>Sistema de Navegação e Identificação de Objetos para Pessoas com Deficiência Visual</em>, com foco em estimar a distância da câmera até um objeto plano (quadrado) utilizando calibração métrica e a API do OpenCV. Os objetivos foram: (i) aplicar os conceitos da disciplina (filtragem, transformações geométricas, calibração e intrínsecos/extrínsecos; além de profundidade); (ii) entregar um sistema executável em Ubuntu com webcam; (iii) conduzir laboratório experimental e teste de campo com usuários.</p>
     </section>
 
     <section class="caixa">
-        <h2>2. Cenário de Aplicação</h2>
-        <p>O sistema fornece ao usuário a distância aproximada de um objeto em formato
-        quadrado, permitindo maior noção espacial e prevenindo colisões.</p>
+        <h2>2. Cenário de Aplicação (CA)</h2>
+        <p>O sistema auxilia um usuário com deficiência visual a perceber a proximidade de um obstáculo/plano de referência ao indicar, em voz e/ou texto na tela, a distância estimada até um cartão quadrado (proxy de objetos planos). O usuário interage posicionando o cartão na frente da câmera enquanto recebe feedback contínuo.</p>
     </section>
 
     <section class="caixa">
-        <h2>3. Fundamentação Teórica</h2>
+        <h2>3. Fundamentação Teórica (resumo)</h2>
         <ul>
-            <li>Modelo pinhole e parâmetros intrínsecos/extrínsecos.</li>
-            <li>Calibração monocular com padrão de xadrez.</li>
-            <li>Estimativa de profundidade via semelhança de triângulos.</li>
-            <li>Pré-processamento: conversão em tons de cinza, blur e limiarização adaptativa.</li>
+            <li><strong>Modelo pinhole</strong> e parâmetros intrínsecos/extrínsecos para projetar coordenadas 3D em 2D.</li>
+            <li><strong>Calibração monocular</strong> por padrão de xadrez para obter matriz K, coeficientes de distorção e reprojeção média.</li>
+            <li><strong>Estimativa de profundidade “single-view”</strong> por semelhança de triângulos: <code>D ≈ (W_real · f) / W_px</code> para objetos planos frontais.</li>
+            <li><strong>Pré-processamento</strong>: conversão para tons de cinza, desfoque Gaussiano e limiarização adaptativa para detecção robusta de contornos.</li>
         </ul>
+        <p class="muted">Obs.: para ângulos fora do plano e objetos não quadrados, o erro cresce; em futuras versões, homografia pode refinar a métrica.</p>
     </section>
 
     <section class="caixa">
         <h2>4. Materiais e Métodos</h2>
-        <p>Arquivos principais: <code>capture_images.py</code>, <code>calibrate.py</code>, <code>main.py</code>.</p>
-        <p>Fluxo: captura de imagens &rarr; calibração &rarr; execução e detecção.</p>
-        <p>Limitações: dificuldade com objetos grandes, quando muito próximos da câmera
-        ou em distâncias maiores que 80 cm.</p>
+        <h3>4.1 Modelagem Funcional (MF)</h3>
+        <div class="grid2">
+            <div>
+                <p><span class="pill">Entrada</span> Vídeo da webcam (640×480), parâmetro <em>fx</em> (pixels), largura real do alvo (cm).</p>
+                <p><span class="pill">Processamento</span> Undistort → pré-processamento → contornos → aproximação poligonal → filtragem por quadrados → distância.</p>
+            </div>
+            <div>
+                <p><span class="pill">Saída</span> Janela com ROI e rótulo <code>“quadrado: XX cm”</code>; logs técnicos no terminal.</p>
+                <p><span class="pill">Operação</span> Iniciar com <span class="kbd">python3 main.py</span>; sair com <span class="kbd">q</span>.</p>
+            </div>
+        </div>
+
+        <h3>4.2 Implementação do SPV</h3>
+        <ul>
+            <li><strong>Captura para calibração</strong>: <code>capture_images.py</code> (detecção de cantos e captura temporizada).</li>
+            <li><strong>Calibração métrica</strong>: <code>calibrate.py</code> (K, distorção, <em>fx</em> em pixels, erro de reprojeção; grava em <code>data/monocam_params.xml</code>).</li>
+            <li><strong>Execução</strong>: <code>main.py</code> (undistort e pipeline de detecção/estimativa).</li>
+        </ul>
+
+        <h3>4.3 Lista de arquivos relevantes</h3>
+        <ul>
+            <li><code>capture_images.py</code> – captura automática/assistida das imagens do tabuleiro para calibração.</li>
+            <li><code>calibrate.py</code> – calibração monocular com escala em centímetros e relatório de erro de reprojeção.</li>
+            <li><code>main.py</code> – detecção de quadrados e estimativa de distância <em>on-the-fly</em>.</li>
+            <li><code>data/monocam_params.xml</code> – parâmetros salvos (K, dist, fx e erro).</li>
+        </ul>
+
+        <h3>4.4 Análise técnica e desempenho</h3>
+        <div class="ok">
+            <p><strong>Funcionou bem</strong> com alvos quadrados pequenos (ex.: quadrícula de xadrez), iluminação uniforme e distâncias entre ~20–80 cm.</p>
+        </div>
+        <div class="warn" style="margin-top:12px">
+            <p><strong>Limitações observadas</strong>: (i) dificuldade com objetos grandes (bounding box saturando o campo de visão); (ii) quando o tabuleiro fica muito próximo da câmera (paralaxe/blur e cantos incompletos); (iii) acima de ~80 cm, a largura em pixels se torna pequena, aumentando o erro relativo.</p>
+        </div>
+        <p><strong>Hipóteses e correções</strong>:
+            <ul>
+                <li>Aumentar a resolução e reduzir <code>epsilon</code> da aproximação poligonal para preservar vértices.</li>
+                <li>Calibrar com quadrados do mesmo tamanho do alvo real usado no campo (consistência de escala).</li>
+                <li>Adicionar “zona de operação” na IU avisando quando <em>W_px</em> &lt; limiar.</li>
+                <li>Para objetos grandes/próximos, medir pela <em>homografia</em> do contorno e largura média em pixels ao longo dos quatro lados.</li>
+            </ul>
+        </p>
     </section>
 
     <section class="caixa">
-        <h2>5. Resultados</h2>
-        <p>O sistema funcionou bem para objetos pequenos (quadrados do tabuleiro de xadrez),
-        com bom desempenho entre 20 e 80 cm.</p>
+        <h2>5. Laboratório Experimental &amp; Teste de Campo (TC)</h2>
+        <p><strong>Síntese do TC:</strong> O protótipo foi bem-sucedido em condições controladas, com falhas pontuais nas bordas da zona útil (&lt; 20 cm e &gt; 80 cm) e com alvos muito grandes. O feedback do uso indica que mensagens claras sobre a zona operacional melhoram a experiência.</p>
+        <p class="muted">Os roteiros completos e formulários estão descritos na Etapa 5 (LEX). Nesta etapa final, a análise consolida os achados e as melhorias propostas.</p>
     </section>
 
     <section class="caixa">
         <h2>6. Conclusões</h2>
-        <p>Os objetivos foram atingidos dentro da faixa operacional. Pontos de melhoria incluem
-        uso de homografia para objetos grandes e AprilTags para maior robustez.</p>
+        <p>Os objetivos de estimar a distância de um alvo plano por visão monocular foram atingidos no intervalo operacional definido. As principais dificuldades concentram-se na robustez para objetos grandes e nos extremos de distância. Como trabalhos futuros, propomos: homografia para medir dimensões no plano do alvo, uso de <em>AprilTags</em> para cantos mais estáveis, ou uma alternativa estéreo leve para ampliar a faixa útil.</p>
+    </section>
+
+    <section class="caixa">
+        <h2>7. Referências</h2>
+        <ul>
+            <li>Documentação OpenCV (4.x) – módulos <em>calib3d</em>, <em>imgproc</em> e tutoriais.</li>
+            <li>Materiais de aula e especificação oficial da disciplina.</li>
+        </ul>
+    </section>
+
+    <section class="caixa">
+        <h2>8. Anexo</h2>
+        <p>Os códigos-fonte citados encontram-se no repositório do projeto.</p>
+        <ul>
+            <li><code>capture_images.py</code></li>
+            <li><code>calibrate.py</code></li>
+            <li><code>main.py</code></li>
+        </ul>
     </section>
 
     <footer>
         <p>&copy; 2025 - Grupo 6 - UFABC</p>
     </footer>
+
 </body>
 </html>
